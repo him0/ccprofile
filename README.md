@@ -71,6 +71,16 @@ alias cc-work='ccss -s work exec claude'
 
 Sessions are stored under `~/.config/ccsession/sessions/`. Each session is a symlink to `~/.claude` at creation time, so settings and conversation history are shared across all sessions. When running `ccss -s <name> exec <cmd>`, ccss sets `CLAUDE_CONFIG_DIR` to the session directory and spawns `<cmd>` — only the login session is separated.
 
+## Environment variables
+
+When `ccss exec` launches a command, these variables are set in the child process:
+
+- `CCSS` — always `1`, a marker that the command is running under ccss
+- `CLAUDE_CONFIG_DIR` — path to the session directory (only set when `-s <name>` is given)
+- `CCSS_SESSION_NAME` — the session name (`default` when `-s` is omitted)
+
+`CCSS` and `CCSS_SESSION_NAME` are handy for showing the current session in your shell prompt or status line.
+
 ## License
 
 MIT

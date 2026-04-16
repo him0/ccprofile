@@ -108,8 +108,8 @@ function parseArgs(argv: string[]): Parsed {
 
 function launchWithSession(session: string | null, cmd: string, cmdArgs: string[]) {
   const env = session
-    ? { ...process.env, CLAUDE_CONFIG_DIR: sessionDir(session) }
-    : process.env;
+    ? { ...process.env, CCSS: "1", CLAUDE_CONFIG_DIR: sessionDir(session), CCSS_SESSION_NAME: session }
+    : { ...process.env, CCSS: "1", CCSS_SESSION_NAME: "default" };
 
   const quote = (s: string) => `'${s.replace(/'/g, "'\\''")}'`;
   const escaped = [cmd, ...cmdArgs].map(quote).join(" ");
