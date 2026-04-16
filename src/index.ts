@@ -10,6 +10,8 @@ import { bold, dim, error } from "./lib/ui";
 const HELP = `
 ${bold("ccp")} - Claude Code Profile switcher
 
+Switch login sessions while sharing settings and history across profiles.
+
 ${bold("Usage:")}
   ccp                       Launch claude (default ~/.claude)
   ccp -p <profile>          Launch claude with a profile
@@ -21,9 +23,9 @@ ${bold("Commands:")}
   delete <name>     Delete a profile ${dim("(--force to skip prompt)")}
 
 ${bold("Examples:")}
-  ccp create work       Create "work" profile
-  ccp -p work           Launch claude as "work"
-  ccp -p work -p work   All args after profile are passed to claude
+  ccp create work         Create "work" profile
+  ccp -p work             Launch claude as "work"
+  ccp -p work --resume    Extra args are passed to claude
 `.trim();
 
 const SUBCOMMANDS = new Set(["create", "list", "ls", "delete", "rm", "help", "--help", "-h"]);
