@@ -7,13 +7,13 @@ Each named session is a symlink to `~/.claude`, so settings and conversation his
 ## Install
 
 ```bash
-bunx him0/ccprofile
+bunx him0/claude-code-session-switcher
 ```
 
 or
 
 ```bash
-npx him0/ccprofile
+npx him0/claude-code-session-switcher
 ```
 
 ## Usage
