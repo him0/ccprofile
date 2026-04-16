@@ -1,6 +1,6 @@
 import { readdir, symlink, mkdir, rm, lstat } from "node:fs/promises";
 import { join } from "node:path";
-import { CLAUDE_DIR, PROFILES_DIR } from "./paths";
+import { CLAUDE_DIR, PROFILES_DIR, SESSION_FILES } from "./paths";
 
 const NAME_RE = /^[a-zA-Z0-9_-]+$/;
 
@@ -36,7 +36,31 @@ export async function listProfiles(): Promise<string[]> {
   }
 }
 
-export async function createProfileSymlink(name: string): Promise<void> {
+/**
+ * Symlink shared files from ~/.claude into a profile directory.
+ * Session files (credentials) are skipped so each profile gets its own login.
+ */
+async function syncSharedFiles(dir: string): Promise<void> {
+  let entries: string[];
+  try {
+    entries = await readdir(CLAUDE_DIR);
+  } catch {
+    return; // ~/.claude doesn't exist yet
+  }
+  for (const entry of entries) {
+    if (SESSION_FILES.has(entry)) continue;
+    const target = join(dir, entry);
+    try {
+      await lstat(target);
+      continue; // already exists in profile dir
+    } catch {
+      // doesn't exist yet — create symlink
+    }
+    await symlink(join(CLAUDE_DIR, entry), target);
+  }
+}
+
+export async function createProfile(name: string): Promise<void> {
   const dir = profileDir(name);
   try {
     await lstat(dir);
@@ -44,7 +68,21 @@ export async function createProfileSymlink(name: string): Promise<void> {
   } catch (e: any) {
     if (e.code !== "ENOENT") throw e;
   }
-  await symlink(CLAUDE_DIR, dir);
+  await mkdir(dir, { recursive: true });
+  await syncSharedFiles(dir);
+}
+
+/** Sync any new shared files from ~/.claude into an existing profile */
+export async function syncProfile(name: string): Promise<void> {
+  const dir = profileDir(name);
+  try {
+    const stat = await lstat(dir);
+    // Old-style symlink profiles share everything already — skip
+    if (stat.isSymbolicLink()) return;
+  } catch {
+    return;
+  }
+  await syncSharedFiles(dir);
 }
 
 export async function removeProfile(name: string): Promise<void> {

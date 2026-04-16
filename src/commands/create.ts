@@ -1,4 +1,4 @@
-import { validateName, ensureProfilesDir, createProfileSymlink } from "../lib/profile";
+import { validateName, ensureProfilesDir, createProfile } from "../lib/profile";
 import { error, success } from "../lib/ui";
 
 export async function create(name: string | undefined) {
@@ -6,7 +6,7 @@ export async function create(name: string | undefined) {
   validateName(name);
   await ensureProfilesDir();
   try {
-    await createProfileSymlink(name);
+    await createProfile(name);
   } catch (e: any) {
     error(e.message);
   }
