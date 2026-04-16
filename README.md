@@ -53,7 +53,7 @@ ccp delete work
 
 ## How it works
 
-Profiles are stored under `~/.config/ccprofile/profiles/`. Each profile is a directory where settings and history are symlinked back to `~/.claude`, while login session files (credentials) remain profile-specific. When launching with `-p <profile>`, ccp syncs any new shared files, sets `CLAUDE_CONFIG_DIR` to the profile directory, and spawns `claude`.
+Profiles are stored under `~/.config/ccprofile/profiles/`. Each profile is a symlink to `~/.claude` at creation time, so settings and conversation history are shared across all profiles. When launching with `-p <profile>`, ccp sets `CLAUDE_CONFIG_DIR` to the profile directory and spawns `claude` — only the login session is separated.
 
 ## License
 

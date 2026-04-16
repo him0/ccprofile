@@ -3,7 +3,7 @@
 import { create } from "./commands/create";
 import { list } from "./commands/list";
 import { del } from "./commands/delete";
-import { profileDir, profileExists, syncProfile } from "./lib/profile";
+import { profileDir, profileExists } from "./lib/profile";
 import { bold, dim, error } from "./lib/ui";
 
 
@@ -101,10 +101,6 @@ async function main() {
 
   if (profile && !(await profileExists(profile))) {
     error(`Profile "${profile}" not found. Run \`ccp create ${profile}\` first.`);
-  }
-
-  if (profile) {
-    await syncProfile(profile);
   }
 
   launchClaude(profile, claudeArgs);
