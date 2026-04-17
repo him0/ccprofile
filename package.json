@@ -8,7 +8,13 @@
     "ccss": "./src/index.ts"
   },
   "private": true,
+  "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
   "devDependencies": {
+    "@changesets/cli": "^2.30.0",
     "@types/bun": "latest"
   },
   "peerDependencies": {

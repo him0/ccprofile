@@ -23,3 +23,16 @@ test("hello world", () => {
   expect(1).toBe(1);
 });
 ```
+
+## Changesets
+
+When you make changes that affect the published package (features, fixes, breaking changes), add a changeset:
+
+```bash
+bun run changeset
+```
+
+- Choose the bump type: `patch` for fixes, `minor` for features, `major` for breaking changes.
+- Write a short, user-facing summary of the change.
+- Commit the generated `.changeset/*.md` file alongside your code changes.
+- Skip changesets only for non-shipping changes (docs-only edits, internal refactors with no behavior change, CI tweaks, test-only changes).
